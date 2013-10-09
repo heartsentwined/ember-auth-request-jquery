@@ -1,6 +1,6 @@
 Em.onLoad 'Ember.Application', (application) ->
   application.initializer
-    name: 'ember-auth-request-jquery'
+    name: 'ember-auth.request.jquery'
     after: 'ember-auth'
 
     initialize: (container, app) ->
