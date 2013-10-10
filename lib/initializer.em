@@ -4,5 +4,6 @@ Em.onLoad 'Ember.Application', (application) ->
     before: 'ember-auth-load'
 
     initialize: (container, app) ->
-      app.register 'authRequest:jquery', Em.Auth.JqueryAuthRequest
+      app.register 'authRequest:jquery', Em.Auth.JqueryAuthRequest, \
+      { singleton: true }
       app.inject 'authRequest:jquery', 'auth', 'auth:main'
