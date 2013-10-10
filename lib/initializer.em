@@ -5,3 +5,4 @@ Em.onLoad 'Ember.Application', (application) ->
 
     initialize: (container, app) ->
       app.register 'authRequest:jquery', Em.Auth.JqueryAuthRequest
+      app.inject 'authRequest:jquery', 'auth', 'auth:main'
