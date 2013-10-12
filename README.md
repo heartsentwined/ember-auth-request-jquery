@@ -16,5 +16,5 @@ App.Auth = Em.Auth.extend
 ## Usage
 
 ```coffeescript
-@auth.jqxhr # access the jqxhr object from last request
+@auth.get 'jqxhr' # access the jqxhr object from last request
 ```
