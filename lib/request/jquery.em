@@ -8,21 +8,20 @@ class Em.Auth.JqueryAuthRequest extends Em.Auth.AuthRequest
   jqxhr: null
 
   signIn: (url, opts) ->
-    @send $.extend true, { url: url, type: 'POST' }, opts
+    @send url, $.extend true, { type: 'POST' }, opts
 
   signOut: (url, opts) ->
-    @send $.extend true, { url: url, type: 'DELETE' }, opts
+    @send url, $.extend true, { type: 'DELETE' }, opts
 
-  send: (opts) ->
-    def = {}
-    def.dataType = 'json'
+  send: (url, opts) ->
+    def = { url: url, dataType: 'json' }
 
     if opts.data && !opts.contentType?
       if opts.type? && opts.type.toUpperCase() != 'GET'
         opts.data = JSON.stringify opts.data
       if opts.type?.toUpperCase() != 'GET'
         def.contentType = 'application/json; charset=utf-8'
-    settings = $.extend def, opts
+    settings = $.extend true, def, opts
 
     new Em.RSVP.Promise (resolve, reject) =>
       $.ajax(
