@@ -28,28 +28,24 @@ void function () {
     },
     jqxhr: null,
     signIn: function (url, opts) {
-      return this.send($.extend(true, {
-        url: url,
-        type: 'POST'
-      }, opts));
+      return this.send(url, $.extend(true, { type: 'POST' }, opts));
     },
     signOut: function (url, opts) {
-      return this.send($.extend(true, {
-        url: url,
-        type: 'DELETE'
-      }, opts));
+      return this.send(url, $.extend(true, { type: 'DELETE' }, opts));
     },
-    send: function (opts) {
+    send: function (url, opts) {
       var def, settings, this$;
-      def = {};
-      set$(def, 'dataType', 'json');
+      def = {
+        url: url,
+        dataType: 'json'
+      };
       if (get$(opts, 'data') && !(null != get$(opts, 'contentType'))) {
         if (null != get$(opts, 'type') && get$(opts, 'type').toUpperCase() !== 'GET')
           set$(opts, 'data', JSON.stringify(get$(opts, 'data')));
         if ((null != get$(opts, 'type') ? get$(opts, 'type').toUpperCase() : void 0) !== 'GET')
           set$(def, 'contentType', 'application/json; charset=utf-8');
       }
-      settings = $.extend(def, opts);
+      settings = $.extend(true, def, opts);
       return new (get$(get$(Em, 'RSVP'), 'Promise'))((this$ = this, function (resolve, reject) {
         var this$1, this$2;
         return $.ajax(settings).done((this$1 = this$, function (json, status, jqxhr) {
