@@ -18,3 +18,8 @@ App.Auth = Em.Auth.extend
 ```coffeescript
 @auth.get 'jqxhr' # access the jqxhr object from last request
 ```
+
+License
+=======
+
+MIT
