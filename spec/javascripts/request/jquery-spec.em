@@ -46,7 +46,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
 
       describe 'data not given', ->
         beforeEach ->
-          Em.run -> jquery.send {}
+          Em.run -> jquery.send null, {}
         follow 'content type'
         follow 'data'
 
@@ -54,7 +54,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
 
         describe 'contentType given', ->
           beforeEach ->
-            Em.run -> jquery.send { contentType: 'foo', data: 'bar' }
+            Em.run -> jquery.send null, { contentType: 'foo', data: 'bar' }
           follow 'content type', 'foo'
           follow 'data', 'bar'
 
@@ -62,7 +62,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
 
           describe 'type not given', ->
             beforeEach ->
-              Em.run -> jquery.send { data: { foo: 'bar' } }
+              Em.run -> jquery.send null, { data: { foo: 'bar' } }
             follow 'content type', 'application/json; charset=utf-8'
             follow 'data', { foo: 'bar' }
 
@@ -70,22 +70,22 @@ describe 'Em.Auth.JqueryAuthRequest', ->
 
             describe '= GET', ->
               beforeEach ->
-                Em.run -> jquery.send { data: { foo: 'bar' }, type: 'get' }
+                Em.run -> jquery.send null, { data: { foo: 'bar' }, type: 'get' }
               follow 'content type'
               follow 'data', { foo: 'bar' }
 
             describe '!= GET', ->
               beforeEach ->
-                Em.run -> jquery.send { data: { foo: 'bar' }, type: 'FOO' }
+                Em.run -> jquery.send null, { data: { foo: 'bar' }, type: 'FOO' }
               follow 'content type', 'application/json; charset=utf-8'
               follow 'data', '{"foo":"bar"}', true
 
     follow 'return promise', ->
-      beforeEach -> @return = jquery.send {}
+      beforeEach -> @return = jquery.send null, {}
 
     it 'is customizable', ->
       spy = sinon.collection.spy jQuery, 'ajax'
-      Em.run -> jquery.send { url: 'bar', type: 'GET', contentType: 'foo' }
+      Em.run -> jquery.send 'bar', { type: 'GET', contentType: 'foo' }
       expect(spy.args[0][0].url).toEqual 'bar'
       expect(spy.args[0][0].type).toEqual 'GET'
       expect(spy.args[0][0].contentType).toEqual 'foo'
@@ -99,7 +99,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
           responseText: response
 
       it 'sets jqxhr', ->
-        Em.run -> jquery.send { url: '/foo', type: 'POST', async: false }
+        Em.run -> jquery.send '/foo', { type: 'POST', async: false }
         expect(jquery.jqxhr).not.toBeNull()
 
     describe 'success', -> follow 'send integration', 201, { foo: 'bar' }
@@ -110,8 +110,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
       it 'delegates to #send', ->
         spy = sinon.collection.spy jquery, 'send'
         Em.run -> jquery[env]('/foo', { bar: 'baz' })
-        expect(spy).toHaveBeenCalledWithExactly
-          url: '/foo'
+        expect(spy).toHaveBeenCalledWithExactly '/foo',
           type: switch env
             when 'signIn'  then 'POST'
             when 'signOut' then 'DELETE'
@@ -120,7 +119,7 @@ describe 'Em.Auth.JqueryAuthRequest', ->
       it 'allows overriding of defaults', ->
         spy = sinon.collection.spy jquery, 'send'
         Em.run -> jquery[env]('/foo', { type: 'bar' })
-        expect(spy).toHaveBeenCalledWithExactly { url: '/foo', type: 'bar' }
+        expect(spy).toHaveBeenCalledWithExactly '/foo', { type: 'bar' }
 
   follow 'action', 'signIn'
   follow 'action', 'signOut'

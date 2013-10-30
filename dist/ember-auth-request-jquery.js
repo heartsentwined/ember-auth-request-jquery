@@ -50,10 +50,14 @@ void function () {
         var this$1, this$2;
         return $.ajax(settings).done((this$1 = this$, function (json, status, jqxhr) {
           set$(this$1, 'jqxhr', jqxhr);
-          return resolve(get$(jqxhr, 'responseText'));
+          return Ember.run(function () {
+            return resolve(get$(jqxhr, 'responseText'));
+          });
         })).fail((this$2 = this$, function (jqxhr) {
           set$(this$2, 'jqxhr', jqxhr);
-          return reject(get$(jqxhr, 'responseText'));
+          return Ember.run(function () {
+            return reject(get$(jqxhr, 'responseText'));
+          });
         }));
       }));
     }

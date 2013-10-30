@@ -28,7 +28,9 @@ class Em.Auth.JqueryAuthRequest extends Em.Auth.AuthRequest
         settings
       ).done( (json, status, jqxhr) =>
         @jqxhr = jqxhr
-        resolve jqxhr.responseText
+        Ember.run ->
+          resolve jqxhr.responseText
       ).fail (jqxhr) =>
         @jqxhr = jqxhr
-        reject jqxhr.responseText
+        Ember.run ->
+          reject jqxhr.responseText
