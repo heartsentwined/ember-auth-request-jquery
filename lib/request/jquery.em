@@ -16,11 +16,13 @@ class Em.Auth.JqueryAuthRequest extends Em.Auth.AuthRequest
   send: (url, opts) ->
     def = { url: url, dataType: 'json' }
 
+    if opts.type?.toUpperCase() != 'GET' && @auth.contentType != 'application/json; charset=utf-8'
+      opts.contentType ||= @auth.contentType
     if opts.data && !opts.contentType?
       if opts.type? && opts.type.toUpperCase() != 'GET'
         opts.data = JSON.stringify opts.data
       if opts.type?.toUpperCase() != 'GET'
-        def.contentType = 'application/json; charset=utf-8'
+        def.contentType = @auth.contentType
     settings = $.extend true, def, opts
 
     new Em.RSVP.Promise (resolve, reject) =>
