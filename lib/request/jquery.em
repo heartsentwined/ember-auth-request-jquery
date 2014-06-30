@@ -1,14 +1,8 @@
 $ = jQuery
 class Em.Auth.JqueryAuthRequest extends Em.Auth.AuthRequest
   init: ->
-    @auth._config 'requestJquery', @_defaultConfig
-    @config? || (@config = @auth._config 'requestJquery')
     @auth.reopen
       jqxhr: Em.computed.alias '_request.jqxhr'
-
-  _defaultConfig:
-    # [string] send different content like form data
-    contentType: 'application/json; charset=utf-8'
 
   # @property [jqXHR] jqxhr of the last request
   jqxhr: null
@@ -22,13 +16,13 @@ class Em.Auth.JqueryAuthRequest extends Em.Auth.AuthRequest
   send: (url, opts) ->
     def = { url: url, dataType: 'json' }
 
-    if opts.type?.toUpperCase() != 'GET' && @config.contentType != 'application/json; charset=utf-8'
-      opts.contentType ||= @config.contentType
+    if opts.type?.toUpperCase() != 'GET' && @auth.contentType != 'application/json; charset=utf-8'
+      opts.contentType ||= @auth.contentType
     if opts.data && !opts.contentType?
       if opts.type? && opts.type.toUpperCase() != 'GET'
         opts.data = JSON.stringify opts.data
       if opts.type?.toUpperCase() != 'GET'
-        def.contentType = @config.contentType
+        def.contentType = @auth.contentType
     settings = $.extend true, def, opts
 
     new Em.RSVP.Promise (resolve, reject) =>
